@@ -1,6 +1,12 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout Code') {
+            steps {
+                // GitHub'dan kodları çekin
+                checkout scm
+            }
+        }
         stage('Build') {
             steps {
                 // Maven ile projeyi derleyin
