@@ -1,29 +1,25 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_IMAGE = 'blogappjdk'
-        CONTAINER_NAME = 'blogwebapp'
-    }
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                git 'https://github.com/Ebu13/blogapp.git'
+                // Maven ile projeyi derleyin
+                sh 'mvn clean package'
             }
         }
-        stage('Build Docker Image') {
+        stage('Docker Build and Push') {
             steps {
-                sh "docker build -t blogappjdk ."
+                // Docker imajını oluşturun ve Docker Hub'a gönderin
+                script {
+                    docker.build("blogappjdk").push()
+                }
             }
         }
-        stage('Deploy Container') {
+        stage('Deploy') {
             steps {
-                sh "docker rm -f blogwebapp || true"
-                sh "docker run --name blogwebapp -d -p 80:8080 blogappjdk"
+                // Docker imajını çalıştırın
+                sh 'docker run -d -p 4444:80 --name myblogapp blogappjdk'
             }
         }
     }
-    post {
-        always {
-            sh "docker images"
-            sh "docker ps -a"
 }
