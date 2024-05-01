@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                // GitHub'dan kodları çekin
-                checkout scm
+                // Konuma git
+                sh 'cd C:\ProgramData\Jenkins\.jenkins\workspace\BlogWebApp'
             }
         }
         stage('Build') {
@@ -15,10 +15,7 @@ pipeline {
         }
         stage('Docker Build and Push') {
             steps {
-                // Docker imajını oluşturun ve Docker Hub'a gönderin
-                script {
-                    docker.build("blogappjdk").push()
-                }
+                sh 'docker build -t blogappjdk .'
             }
         }
         stage('Deploy') {
