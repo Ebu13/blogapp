@@ -10,19 +10,19 @@ pipeline {
         stage('Build') {
             steps {
                 // Maven ile projeyi derleyin
-                bat 'mvn -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\BlogWebApp\\pom.xml clean package'
+                bat 'ilk.bat'
             }
         }
         stage('Docker Build and Push') {
             steps {
                 // Docker imajını oluşturun ve gönderin
-                bat 'docker build -t blogappjdk -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\BlogWebApp\\Dockerfile .'
+                bat 'iki.bat'
             }
         }
         stage('Deploy') {
             steps {
                 // Docker imajını çalıştırın
-                bat 'docker run -d -p 4444:80 --name myblogapp blogappjdk'
+                bat 'son.bat'
             }
         }
     }
