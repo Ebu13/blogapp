@@ -3,25 +3,26 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                // Konuma git
-                sh 'cd C:\ProgramData\Jenkins\.jenkins\workspace\BlogWebApp'
+                // İstenen konuma git
+                bat 'cd C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\BlogWebApp'
             }
         }
         stage('Build') {
             steps {
                 // Maven ile projeyi derleyin
-                sh 'mvn clean package'
+                bat 'mvn -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\BlogWebApp\\pom.xml clean package'
             }
         }
         stage('Docker Build and Push') {
             steps {
-                sh 'docker build -t blogappjdk .'
+                // Docker imajını oluşturun ve gönderin
+                bat 'docker build -t blogappjdk -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\BlogWebApp\\Dockerfile .'
             }
         }
         stage('Deploy') {
             steps {
                 // Docker imajını çalıştırın
-                sh 'docker run -d -p 4444:80 --name myblogapp blogappjdk'
+                bat 'docker run -d -p 4444:80 --name myblogapp blogappjdk'
             }
         }
     }
